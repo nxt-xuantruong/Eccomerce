@@ -11,11 +11,28 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from os.path import join
+import environ
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# build environment variables
+env = environ.Env()
+environ.Env.read_env(join(BASE_DIR, 'config.env'))
 
+CLOUDINARY_CLOUD_NAME=env('CLOUDINARY_CLOUD_NAME')
+CLOUDINARY_API_KEY=env('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET=env('CLOUDINARY_API_SECRET')
+
+# config cloudinary
+cloudinary.config(
+    cloud_name=CLOUDINARY_CLOUD_NAME,
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_API_SECRET,
+    secure=True
+)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -37,6 +54,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'products',
+    "cloudinary",
+    'upload',
 ]
 
 MIDDLEWARE = [
@@ -109,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
